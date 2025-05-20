@@ -1,5 +1,3 @@
-// src/data/getInitialData.js
-
 /**
  * 서버에서 불러올 사용자 초기 데이터 (현재는 mock 형식)
  * type이 'auto' 또는 'autoEditable'인 필드에 기본값으로 사용됨

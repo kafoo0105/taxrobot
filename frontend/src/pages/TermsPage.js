@@ -31,7 +31,7 @@ const TermsPage = () => {
             return;
         }
 
-        console.log("✅ 제출 데이터:", formState);
+        console.log("제출 데이터:", formState);
     };
 
 

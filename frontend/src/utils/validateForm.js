@@ -8,7 +8,7 @@ export const validateForm = (formState) => {
     'name',
     'birth',
     'phone',
-    'device',
+    'address',
     'autoPaymentType',
     'bank',
     'account',

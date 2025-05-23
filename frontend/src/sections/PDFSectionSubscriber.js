@@ -39,8 +39,8 @@ const PDFSectionSubscriber = ({ formState, dispatch, invalidKeys = [] }) => {
         </FormGroup>
 
         <FormGroup>
-          <Label>설치장치</Label>
-          <ReadOnly>{formState.device}</ReadOnly>
+          <Label>설치 장소</Label>
+          <ReadOnly>{formState.address}</ReadOnly>
         </FormGroup>
 
         <FormGroup>

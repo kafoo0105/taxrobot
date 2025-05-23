@@ -1,12 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TermsPage from './pages/TermsPage';
 
 function App() {
   return (
-    <div className="App">
-      <TermsPage></TermsPage>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<TermsPage />} />
+      </Routes>
+    </Router>
   );
 }
 

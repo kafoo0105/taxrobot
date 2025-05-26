@@ -1,76 +1,99 @@
+// src/pages/TermsPage.js
+
 import React, { useEffect, useReducer, useState } from 'react';
 import PDFSectionSubscriber from '../sections/PDFSectionSubscriber';
 import AgreeSection from '../components/AgreeSection';
 import { getInitialData } from '../data/getInitialData';
 import { formReducer } from '../reducers/formReducer';
 import { validateForm } from '../utils/validateForm';
-import SignatureModal from '../components/SignatureModal';
 
 /**
- * 메인 계약서 페이지
- * - formReducer를 사용하여 상태 중앙 관리
- * - getInitialData()로 초기 상태 주입 (이후 fetch로 대체 가능)
- * - 섹션 컴포넌트에 상태와 dispatch 전달
+ * 계약서 페이지: 입력된 formState를 이싸인온 필드에 매핑하여 전자서명 생성
  */
-
-
 const TermsPage = () => {
-
   const [formState, dispatch] = useReducer(formReducer, {});
   const [invalidKeys, setInvalidKeys] = useState([]);
-  const [showSignatureModal, setShowSignatureModal] = useState(false);
 
-  // 이 과정을 통해 getInitialData()의 값이 formState의 초기 상태로 들어감
+  // 초기 데이터 로드
   useEffect(() => {
-    // 나중에 fetch(`/api/user`) 등으로 대체할 예정
-    const initialData = getInitialData(); // -> mock 사용자 데이터
-    dispatch({ type: "SET_ALL", payload: initialData }); // formState에 넣기
+    const initialData = getInitialData(); // mock 데이터
+    dispatch({ type: "SET_ALL", payload: initialData });
   }, []);
 
-  // 서명 입력 완료 시 처리
-  const handleSignatureComplete = (signature) => {
-    setShowSignatureModal(false); // 모달 닫기
-    if (signature) {
-      const keys = ['signature1', 'signature2']; // 적용할 서명 필드들
-      keys.forEach(key => {
-        dispatch({ type: "UPDATE_FIELD", key, value: signature });
-      });
-    }
+  // 이싸인온 필드 이름에 맞춰 formState 값을 매핑
+  const generateFieldList = (formState) => {
+    return [
+      { name: '가입자명', value: formState.name },
+      { name: '생년월일', value: formState.birth },
+      { name: '세금계산서', value: formState.taxInvoice ? 'Y' : 'N' },
+      { name: '설치장소', value: formState.address },
+      { name: '이동전화연락처', value: formState.phone },
+      { name: '예금주', value: formState.holder }
+    ];
   };
 
-  const handleSubmit = () => {
+  // 제출하기 클릭 시: 유효성 검사 + 이싸인온 API 호출
+  const handleSubmit = async () => {
     const errors = validateForm(formState);
     if (errors.length > 0) {
       alert("입력되지 않은 필수 항목이 있습니다.");
       setInvalidKeys(errors);
       return;
     }
-
-    console.log("제출 데이터:", formState);
+  
+    const fieldList = generateFieldList(formState);
+  
+    const options = {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        Authorization: 'esignon q9R2jlRRiR12/ODR9w14xlk6sFjPm6oRr7W5IZSwPmgdJyPiP+suE4h5FnPPvqdAJgFCpZI16TOiz+BlBYDlx6PsadAO+PhwVq+eKC7HzcBp/L5z2grRi3vKjoOc8Nw9'
+      },
+      body: JSON.stringify({
+        language: 'ko',
+        is_preview: false,
+        workflow_name: 'SKT',
+        template_id: 488,
+        recipient_list: [
+          {
+            order: 1,
+            email: formState.email,
+            name: formState.name
+          }
+        ],
+        field_list: fieldList
+      })
+    };
+  
+    try {
+      const res = await fetch('https://docs.esignon.net/api/v3/workflows/start?offset=%2B09%3A00', options);
+      const data = await res.json();
+  
+      if (data.token) {
+        const signUrl = `https://docs.esignon.net/mail/sign?token=${data.token}`;
+        window.open(signUrl, '_blank'); // ✅ 새 창으로 열기
+      } else {
+        alert(data.header?.result_msg || '서명 URL 생성 실패');
+      }
+    } catch (err) {
+      console.error('서명 요청 실패:', err);
+      alert('서명 요청 중 오류 발생');
+    }
   };
-
 
   return (
     <div style={{ padding: '20px', background: '#f7f7f7' }}>
-      {/* 가입자 정보 섹션 */}
       <PDFSectionSubscriber
         formState={formState}
         dispatch={dispatch}
         invalidKeys={invalidKeys}
-        onOpenSignature={() => setShowSignatureModal(true)}
       />
 
-      {/* 하단 버튼 섹션 */}
       <AgreeSection
         dispatch={dispatch}
         formState={formState}
-        onOpenSignature={() => setShowSignatureModal(true)} // ← 모달 열기 함수 연결
       />
-
-      {/* 서명 모달 표시 */}
-      {showSignatureModal && (
-        <SignatureModal onClose={handleSignatureComplete} />
-      )}
 
       {/* 제출 버튼 */}
       <div style={{ marginTop: '24px', textAlign: 'center' }}>
@@ -90,6 +113,8 @@ const TermsPage = () => {
           제출하기
         </button>
       </div>
+
+      
     </div>
   );
 };

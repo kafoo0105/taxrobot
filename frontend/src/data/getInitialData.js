@@ -16,7 +16,7 @@ export const getInitialData = () => ({
     cardNumber: "1234-5678-9012-3456", // 카드번호
     cardExpire: "",                  // 유효기간
     cardHolder: "홍길동",             // 카드주
-    email: "gildong@example.com",    // 이메일
+    email: "kafoo0105@gmail.com",    // 이메일
     agreePayment: false              // 예금주 동의 체크
   });
   

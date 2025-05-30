@@ -6,6 +6,8 @@ import AgreeSection from '../components/AgreeSection';
 import { getInitialData } from '../data/getInitialData';
 import { formReducer } from '../reducers/formReducer';
 import { validateForm } from '../utils/validateForm';
+import AgreementRow from '../components/AgreementRow';
+
 
 /**
  * 계약서 페이지: 입력된 formState를 이싸인온 필드에 매핑하여 전자서명 생성
@@ -40,9 +42,9 @@ const TermsPage = () => {
       setInvalidKeys(errors);
       return;
     }
-  
+
     const fieldList = generateFieldList(formState);
-  
+
     const options = {
       method: 'POST',
       headers: {
@@ -65,11 +67,11 @@ const TermsPage = () => {
         field_list: fieldList
       })
     };
-  
+
     try {
       const res = await fetch('https://docs.esignon.net/api/v3/workflows/start?offset=%2B09%3A00', options);
       const data = await res.json();
-  
+
       if (data.token) {
         const signUrl = `https://docs.esignon.net/mail/sign?token=${data.token}`;
         window.open(signUrl, '_blank'); // ✅ 새 창으로 열기
@@ -88,6 +90,24 @@ const TermsPage = () => {
         formState={formState}
         dispatch={dispatch}
         invalidKeys={invalidKeys}
+      />
+
+      <AgreementRow
+        title="인터넷 서비스 및 유료방송결합상품 전환 신청서"
+        pdfUrl="/pdfs/switch.pdf"
+        value={formState.serviceAgreement}
+        onChange={(val) =>
+          dispatch({ type: 'UPDATE_FIELD', key: 'serviceAgreement', value: val })
+        }
+      />
+
+      <AgreementRow
+        title="개인정보활용동의서"
+        pdfUrl="/pdfs/privacy.pdf"
+        value={formState.personalAgreement}
+        onChange={(val) =>
+          dispatch({ type: 'UPDATE_FIELD', key: 'personalAgreement', value: val })
+        }
       />
 
       <AgreeSection
@@ -114,7 +134,7 @@ const TermsPage = () => {
         </button>
       </div>
 
-      
+
     </div>
   );
 };

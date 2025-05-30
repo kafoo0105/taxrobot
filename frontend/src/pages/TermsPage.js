@@ -93,11 +93,20 @@ const TermsPage = () => {
       />
 
       <AgreementRow
-        title="인터넷 서비스 및 유료방송결합상품 전환 신청서"
-        pdfUrl="/pdfs/switch.pdf"
+        title="서비스 이용계약서"
+        pdfUrl="/pdfs/service.pdf"
         value={formState.serviceAgreement}
         onChange={(val) =>
           dispatch({ type: 'UPDATE_FIELD', key: 'serviceAgreement', value: val })
+        }
+      />
+
+      <AgreementRow
+        title="인터넷 서비스 및 유료방송결합상품 전환 신청서"
+        pdfUrl="/pdfs/switch.pdf"
+        value={formState.switchAgreement}
+        onChange={(val) =>
+          dispatch({ type: 'UPDATE_FIELD', key: 'switchAgreement', value: val })
         }
       />
 

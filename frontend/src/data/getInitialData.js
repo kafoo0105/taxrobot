@@ -19,6 +19,7 @@ export const getInitialData = () => ({
     email: "kafoo0105@gmail.com",    // 이메일
     agreePayment: false,            // 예금주 동의 체크
     serviceAgreement: 'N',          // 전환
+    switchAgreement: 'N',          // 전환
     personalAgreement: 'N',         // 개인정보활용 동의   
   });
   

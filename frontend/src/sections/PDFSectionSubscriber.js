@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 /**
- * PDF 기반 '가입자 정보' 섹션을 현대적으로 재디자인
- * - 모바일 뷰에 맞춘 카드형 구조
  * - 입력 조건 (readonly, editable 등)은 엑셀 기준에 따라 반영
  */
 const PDFSectionSubscriber = ({ formState, dispatch, invalidKeys = [], onOpenSignature }) => {

@@ -1,7 +1,6 @@
 /**
- * 서버에서 불러올 사용자 초기 데이터 (현재는 mock 형식)
- * type이 'auto' 또는 'autoEditable'인 필드에 기본값으로 사용됨
- * 이후 서버 API fetch로 교체 예정
+ * 서버에서 불러올 사용자 초기 데이터
+ * 이후 서버 API로 교체
  */
 export const getInitialData = () => ({
     name: "홍길동",                    // 가입자명 (자동입력, 수정불가)
@@ -18,7 +17,7 @@ export const getInitialData = () => ({
     cardHolder: "홍길동",             // 카드주
     email: "kafoo0105@gmail.com",    // 이메일
     agreePayment: false,            // 예금주 동의 체크
-    serviceAgreement: 'N',          // 전환
+    serviceAgreement: 'N',          // 서비스이용계약서
     switchAgreement: 'N',          // 전환
     personalAgreement: 'N',         // 개인정보활용 동의   
   });

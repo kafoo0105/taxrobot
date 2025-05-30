@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 /**
- * 약관 항목 한 줄 - 전문보기 클릭 시에만 동의 가능
+ * 전문보기 클릭 시에만 동의 가능
  */
 const AgreementRow = ({ title, pdfUrl, value, onChange }) => {
     const [hasViewed, setHasViewed] = useState(false);
@@ -49,7 +49,6 @@ const AgreementRow = ({ title, pdfUrl, value, onChange }) => {
 
 export default AgreementRow;
 
-// =================== styled-components ===================
 
 const Container = styled.div`
   background: #fff;
@@ -83,8 +82,6 @@ const ViewButton = styled.button`
     background-color: ${({ viewed }) => (viewed ? '#0056b3' : '#e0e0e0')}; // 짙은 파랑 or 회색
   }
 `;
-
-
 
 const RadioBlock = styled.div`
   display: flex;

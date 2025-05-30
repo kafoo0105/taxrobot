@@ -1,5 +1,3 @@
-// src/pages/TermsPage.js
-
 import React, { useEffect, useReducer, useState } from 'react';
 import PDFSectionSubscriber from '../sections/PDFSectionSubscriber';
 import AgreeSection from '../components/AgreeSection';
@@ -16,9 +14,8 @@ const TermsPage = () => {
   const [formState, dispatch] = useReducer(formReducer, {});
   const [invalidKeys, setInvalidKeys] = useState([]);
 
-  // 초기 데이터 로드
   useEffect(() => {
-    const initialData = getInitialData(); // mock 데이터
+    const initialData = getInitialData(); // 현재는 mock 데이터
     dispatch({ type: "SET_ALL", payload: initialData });
   }, []);
 
@@ -74,7 +71,7 @@ const TermsPage = () => {
 
       if (data.token) {
         const signUrl = `https://docs.esignon.net/mail/sign?token=${data.token}`;
-        window.open(signUrl, '_blank'); // ✅ 새 창으로 열기
+        window.open(signUrl, '_blank');
       } else {
         alert(data.header?.result_msg || '서명 URL 생성 실패');
       }

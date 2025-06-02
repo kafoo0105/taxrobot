@@ -5,6 +5,8 @@ import { getInitialData } from '../data/getInitialData';
 import { formReducer } from '../reducers/formReducer';
 import { validateForm } from '../utils/validateForm';
 import AgreementRow from '../components/AgreementRow';
+import { generateFieldList } from '../utils/fieldMapper';
+import { startEsignonWorkflow } from '../api/esignon';
 
 
 /**
@@ -19,7 +21,6 @@ const TermsPage = () => {
     dispatch({ type: "SET_ALL", payload: initialData });
   }, []);
 
-  // 이싸인온 필드 이름에 맞춰 formState 값을 매핑
   const generateFieldList = (formState) => {
     return [
       { name: '가입자명', value: formState.name },
@@ -31,7 +32,6 @@ const TermsPage = () => {
     ];
   };
 
-  // 제출하기 클릭 시: 유효성 검사 + 이싸인온 API 호출
   const handleSubmit = async () => {
     const errors = validateForm(formState);
     if (errors.length > 0) {
@@ -40,45 +40,28 @@ const TermsPage = () => {
       return;
     }
 
-    const fieldList = generateFieldList(formState);
+    const fieldList = generateFieldList(formState, '서비스이용계약서');
 
-    const options = {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        Authorization: 'esignon q9R2jlRRiR12/ODR9w14xlk6sFjPm6oRr7W5IZSwPmgdJyPiP+suE4h5FnPPvqdAJgFCpZI16TOiz+BlBYDlx6PsadAO+PhwVq+eKC7HzcBp/L5z2grRi3vKjoOc8Nw9'
+    const response = await startEsignonWorkflow({
+      workflowName: "서비스이용계약서_미림미디어랩_2025-05-31 - 복사본",
+      templateId: 492,
+      recipient: {
+        order: 1,
+        email: formState.email,
+        name: formState.name
       },
-      body: JSON.stringify({
-        language: 'ko',
-        is_preview: false,
-        workflow_name: 'SKT',
-        template_id: 488,
-        recipient_list: [
-          {
-            order: 1,
-            email: formState.email,
-            name: formState.name
-          }
-        ],
-        field_list: fieldList
-      })
-    };
+      fieldList
+    });
 
-    try {
-      const res = await fetch('https://docs.esignon.net/api/v3/workflows/start?offset=%2B09%3A00', options);
-      const data = await res.json();
-
-      if (data.token) {
-        const signUrl = `https://docs.esignon.net/mail/sign?token=${data.token}`;
-        window.open(signUrl, '_blank');
-      } else {
-        alert(data.header?.result_msg || '서명 URL 생성 실패');
-      }
-    } catch (err) {
-      console.error('서명 요청 실패:', err);
-      alert('서명 요청 중 오류 발생');
+    if (response.token) {
+      const signUrl = `https://docs.esignon.net/mail/sign?token=${response.token}`;
+      console.error('응답 본문:', response);
+      window.open(signUrl, '_blank');
+    } else {
+      console.error('응답 본문:', response);
+      alert(response.header?.result_msg || '서명 URL 생성 실패');
     }
+
   };
 
   return (

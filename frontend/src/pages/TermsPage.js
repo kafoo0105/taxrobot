@@ -35,6 +35,7 @@ const TermsPage = () => {
       { name: '설치장소', value: formState.address },
       { name: '이동전화연락처', value: formState.phone },
       { name: '예금주', value: formState.holder },
+      { name: '카드번호', value: formState.account },
       { name: '이메일', value: formState.email },
       { name: 'name_1', value: formState.name },
       { name: 'name_2', value: formState.name },

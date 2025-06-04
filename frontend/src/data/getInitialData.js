@@ -19,6 +19,6 @@ export const getInitialData = () => ({
     agreePayment: false,            // 예금주 동의 체크
     serviceAgreement: 'N',          // 서비스이용계약서
     switchAgreement: 'N',          // 전환
-    personalAgreement: 'N',         // 개인정보활용 동의   
+    personalAgreement: 'N',         // 개인정보활용 동의
   });
   

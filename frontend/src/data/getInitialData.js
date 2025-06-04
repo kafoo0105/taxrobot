@@ -20,5 +20,6 @@ export const getInitialData = () => ({
     serviceAgreement: 'N',          // 서비스이용계약서
     switchAgreement: 'N',          // 전환
     personalAgreement: 'N',         // 개인정보활용 동의
+    price: '10,000',         // 가액
   });
   

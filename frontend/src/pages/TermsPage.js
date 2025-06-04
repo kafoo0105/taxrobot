@@ -5,8 +5,7 @@ import { getInitialData } from '../data/getInitialData';
 import { formReducer } from '../reducers/formReducer';
 import { validateForm } from '../utils/validateForm';
 import AgreementRow from '../components/AgreementRow';
-import { generateFieldList } from '../utils/fieldMapper';
-import { startEsignonWorkflow } from '../api/esignon';
+import { createEsignonLink } from '../api/esignon';
 
 
 /**
@@ -39,30 +38,20 @@ const TermsPage = () => {
       setInvalidKeys(errors);
       return;
     }
-
-    const fieldList = generateFieldList(formState, '서비스이용계약서');
-
-    const response = await startEsignonWorkflow({
-      workflowName: "서비스이용계약서_미림미디어랩_2025-05-31 - 복사본",
-      templateId: 492,
-      recipient: {
-        order: 1,
-        email: formState.email,
-        name: formState.name
-      },
-      fieldList
-    });
-
-    if (response.token) {
-      const signUrl = `https://docs.esignon.net/mail/sign?token=${response.token}`;
-      console.error('응답 본문:', response);
-      window.open(signUrl, '_blank');
-    } else {
-      console.error('응답 본문:', response);
-      alert(response.header?.result_msg || '서명 URL 생성 실패');
+  
+    try {
+      const response = await createEsignonLink();
+      if (response.link_url) {
+        window.open(response.link_url, '_blank');
+      } else {
+        alert('서명 링크 생성 실패');
+        console.error('응답:', response);
+      }
+    } catch (err) {
+      alert('요청 중 오류 발생');
     }
-
   };
+  
 
   return (
     <div style={{ padding: '20px', background: '#f7f7f7' }}>

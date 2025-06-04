@@ -5,7 +5,7 @@ import { getInitialData } from '../data/getInitialData';
 import { formReducer } from '../reducers/formReducer';
 import { validateForm } from '../utils/validateForm';
 import AgreementRow from '../components/AgreementRow';
-import { createEsignonLink } from '../api/esignon';
+import { startEsignonWorkflow } from '../api/esignon';
 
 
 /**
@@ -20,17 +20,6 @@ const TermsPage = () => {
     dispatch({ type: "SET_ALL", payload: initialData });
   }, []);
 
-  const generateFieldList = (formState) => {
-    return [
-      { name: '가입자명', value: formState.name },
-      { name: '생년월일', value: formState.birth },
-      { name: '세금계산서', value: formState.taxInvoice ? 'Y' : 'N' },
-      { name: '설치장소', value: formState.address },
-      { name: '이동전화연락처', value: formState.phone },
-      { name: '예금주', value: formState.holder }
-    ];
-  };
-
   const handleSubmit = async () => {
     const errors = validateForm(formState);
     if (errors.length > 0) {
@@ -38,20 +27,41 @@ const TermsPage = () => {
       setInvalidKeys(errors);
       return;
     }
-  
+
+    const fieldList = [
+      { name: '가입자명', value: formState.name },
+      { name: '생년월일', value: formState.birth },
+      { name: '세금계산서', value: formState.taxInvoice ? 'Y' : 'N' },
+      { name: '설치장소', value: formState.address },
+      { name: '이동전화연락처', value: formState.phone },
+      { name: '예금주', value: formState.holder }
+    ];
+
     try {
-      const response = await createEsignonLink();
-      if (response.link_url) {
-        window.open(response.link_url, '_blank');
+      const response = await startEsignonWorkflow({
+        workflowName: '서비스이용계약서',
+        templateId: 492,
+        recipient: {
+          order: 1,
+          email: formState.email,
+          name: formState.name
+        },
+        fieldList
+      });
+
+      if (response.sign_url) {
+        window.open(response.sign_url, '_blank');
       } else {
-        alert('서명 링크 생성 실패');
+        alert('서명 URL 생성 실패');
         console.error('응답:', response);
       }
     } catch (err) {
       alert('요청 중 오류 발생');
+      console.error(err);
     }
   };
-  
+
+
 
   return (
     <div style={{ padding: '20px', background: '#f7f7f7' }}>

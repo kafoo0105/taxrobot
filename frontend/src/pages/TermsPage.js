@@ -5,8 +5,7 @@ import { getInitialData } from '../data/getInitialData';
 import { formReducer } from '../reducers/formReducer';
 import { validateForm } from '../utils/validateForm';
 import AgreementRow from '../components/AgreementRow';
-import { startEsignonWorkflow } from '../api/esignon';
-
+import { submitAllDocuments } from '../workflows/submitAll';
 
 /**
  * 계약서 페이지: 입력된 formState를 이싸인온 필드에 매핑하여 전자서명 생성
@@ -28,46 +27,21 @@ const TermsPage = () => {
       return;
     }
 
-    const fieldList = [
-      { name: '가입자명', value: formState.name },
-      { name: '생년월일', value: formState.birth },
-      { name: '세금계산서', value: formState.taxInvoice ? 'Y' : 'N' },
-      { name: '설치장소', value: formState.address },
-      { name: '이동전화연락처', value: formState.phone },
-      { name: '예금주', value: formState.holder },
-      { name: '카드번호', value: formState.account },
-      { name: '이메일', value: formState.email },
-      { name: 'name_1', value: formState.name },
-      { name: 'name_2', value: formState.name },
-      { name: 'name_3', value: formState.name },
-      { name: '번호이동가입정보', value: formState.phone },
-      { name: '가액', value: formState.price },
-    ];
-
     try {
-      const response = await startEsignonWorkflow({
-        workflowName: '서비스이용계약서',
-        templateId: 492,
-        recipient: {
-          order: 1,
-          email: formState.email,
-          name: formState.name
-        },
-        fieldList
-      });
+      const urls = await submitAllDocuments(formState);
 
-      if (response.sign_url) {
-        window.open(response.sign_url, '_blank');
+      if (urls.length > 0) {
+        urls.forEach((url, idx) => {
+          window.open(url, `_blank${idx}`);
+        });
       } else {
-        alert('서명 URL 생성 실패');
-        console.error('응답:', response);
+        alert("서명 링크 생성 실패");
       }
     } catch (err) {
       alert('요청 중 오류 발생');
       console.error(err);
     }
   };
-
 
 
   return (

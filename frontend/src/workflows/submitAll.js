@@ -1,8 +1,6 @@
 import { startEsignonWorkflow } from '../api/esignon';
 import {
   SERVICE_TEMPLATE_ID,
-  PRIVACY_TEMPLATE_ID,
-  SWITCH_TEMPLATE_ID
 } from '../data/templateInfo';
 import { generateFieldList } from '../utils/fieldMapper';
 

@@ -1,1 +1,0 @@
-export const SERVICE_TEMPLATE_ID = 6;

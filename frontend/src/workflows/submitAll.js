@@ -1,13 +1,12 @@
 import { startEsignonWorkflow } from '../api/esignon';
-import {
-  SERVICE_TEMPLATE_ID,
-} from '../data/templateInfo';
+import { getTemplateInfo } from '../utils/templateMapper';
 import { generateFieldList } from '../utils/fieldMapper';
 
 export const submitAllDocuments = async (formState) => {
-  const { name, email } = formState;
+  const { name, email, caseNumber } = formState;
   const results = [];
 
+  const { workflowName, templateId } = getTemplateInfo(caseNumber);
   const fieldList = generateFieldList(formState, '서비스이용계약서');
 
   const recipient = {
@@ -17,8 +16,8 @@ export const submitAllDocuments = async (formState) => {
   };
 
   const res = await startEsignonWorkflow({
-    workflowName: '서비스이용계약서',
-    templateId: SERVICE_TEMPLATE_ID,
+    workflowName,
+    templateId,
     recipient,
     fieldList
   });

@@ -35,6 +35,24 @@ const PDFSectionSubscriber = ({ formState, dispatch, invalidKeys = [], onOpenSig
       </Header>
 
       <Grid>
+
+        <FormGroup>
+          <Label>서비스 Case 선택</Label>
+          <Select
+            value={formState.caseNumber || ''}
+            onChange={(e) =>
+              dispatch({ type: 'UPDATE_FIELD', key: 'caseNumber', value: Number(e.target.value) })
+            }
+          >
+            <option value="">선택</option>
+            {[...Array(12)].map((_, i) => (
+              <option key={i + 1} value={i + 1}>
+                Case {i + 1}
+              </option>
+            ))}
+          </Select>
+        </FormGroup>
+
         <FormGroup>
           <Label>가입자명</Label>
           <ReadOnly>{formState.name}</ReadOnly>
@@ -56,6 +74,16 @@ const PDFSectionSubscriber = ({ formState, dispatch, invalidKeys = [], onOpenSig
         </FormGroup>
 
         <FormGroup>
+          <Label>이동전화 명의자 성명</Label>
+          <ReadOnly>{formState.name}</ReadOnly>
+        </FormGroup>
+
+        <FormGroup>
+          <Label>관계</Label>
+          <ReadOnly>{formState.relation}</ReadOnly>
+        </FormGroup>
+
+        <FormGroup>
           <Label>요금 납부 방법</Label>
           <Select
             value={formState.autoPaymentType}
@@ -72,6 +100,7 @@ const PDFSectionSubscriber = ({ formState, dispatch, invalidKeys = [], onOpenSig
         {/* 자동이체 선택값에 따른 조건부 렌더링 */}
         {formState.autoPaymentType === '계좌' && (
           <>
+
             <FormGroup>
               <Label>은행</Label>
               <Input

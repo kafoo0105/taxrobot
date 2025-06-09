@@ -27,6 +27,11 @@ const TermsPage = () => {
       return;
     }
 
+    if (!formState.caseNumber) {
+      alert("Case 번호를 선택해주세요.");
+      return;
+    }
+
     try {
       const urls = await submitAllDocuments(formState);
 

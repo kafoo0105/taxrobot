@@ -136,6 +136,16 @@ const PDFSectionSubscriber = ({ formState, dispatch, invalidKeys = [], onOpenSig
         {formState.autoPaymentType === '카드' && (
           <>
             <FormGroup>
+              <Label>카드사</Label>
+              <Input
+                value={formState.cardCompany}
+                onChange={e => handleChange('cardCompany', e.target.value)}
+                hasError={isInvalid('cardCompany')}
+              />
+              {isInvalid('cardCompany') && <ErrorText>카드사는 필수 항목입니다.</ErrorText>}
+            </FormGroup>
+            
+            <FormGroup>
               <Label>카드번호</Label>
               <Input
                 value={formState.cardNumber}
@@ -199,9 +209,6 @@ const PDFSectionSubscriber = ({ formState, dispatch, invalidKeys = [], onOpenSig
           예금자(카드주) 동의
           {isInvalid('agreePayment') && <ErrorText>필수 항목입니다.</ErrorText>}
         </label>
-        <SignatureBox onClick={onOpenSignature}>
-          {formState.signature1 ? formState.signature1 : '서명 / 인'}
-        </SignatureBox>
       </Footer>
     </Card>
   );
@@ -328,22 +335,6 @@ const Footer = styled.div`
     }
   }
 `;
-
-const SignatureBox = styled.div`
-  padding: 12px 20px;
-  border: 1px dashed #aaa;
-  border-radius: 6px;
-  color: #888;
-  font-size: 14px;
-  background: #fafafa;
-  cursor: pointer;
-
-  &:hover {
-    background: #f0f0f0;
-    border-color: #666;
-  }
-`;
-
 
 const ErrorText = styled.div`
   color: #ff4d4f;

@@ -11,6 +11,7 @@ export const getInitialData = (adminConfig = {}) => ({
   taxInvoice: adminConfig.isCorporate || false,           // 세금계산서 발행 여부 (기본 체크)
   autoPaymentType: "",             // 자동이체 선택: 카드/계좌
   bank: "국민은행",                 // 은행명 (자동입력+수정가능)
+  cardCompany: "신한", // 카드사
   account: "123456-78-901234",     // 계좌번호
   holder: "홍길동",                 // 예금주
   cardNumber: "1234-5678-9012-3456", // 카드번호

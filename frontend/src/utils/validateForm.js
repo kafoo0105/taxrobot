@@ -18,7 +18,7 @@ export const validateForm = (formState) => {
   }
 
   if (autoPaymentType === '카드') {
-    requiredKeys.push('cardNumber', 'cardExpire', 'cardHolder');
+    requiredKeys.push('cardNumber', 'cardExpire', 'cardHolder', 'cardCompany');
   }
 
   // 누락된 항목 필터링

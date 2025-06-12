@@ -1,11 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TermsPage from './pages/TermsPage';
+import AdminPage from './pages/AdminPage';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<TermsPage />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="*" element={<AdminPage />} /> {/* 초기 진입 경로도 관리자 페이지로 설정 */}
       </Routes>
     </Router>
   );

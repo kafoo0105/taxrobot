@@ -6,7 +6,7 @@ export const submitAllDocuments = async (formState) => {
   const { name, email, caseNumber } = formState;
   const results = [];
 
-  const { workflowName, templateId } = getTemplateInfo(caseNumber);
+  const { workflowName, templateId } = getTemplateInfo(formState.caseNumber, formState.carrier);
   const fieldList = generateFieldList(formState, '서비스이용계약서');
 
   const recipient = {
@@ -21,6 +21,12 @@ export const submitAllDocuments = async (formState) => {
     recipient,
     fieldList
   });
+
+  // 템플릿 ID가 아직 정해지지 않은 경우
+  if (!templateId) {
+    alert('해당 통신사의 템플릿 ID가 아직 설정되지 않았습니다.');
+    return [];
+  }
 
   if (res.sign_url) results.push(res.sign_url);
   return results;

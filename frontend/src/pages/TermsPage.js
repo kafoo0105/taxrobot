@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import PDFSectionSubscriber from '../sections/PDFSectionSubscriber';
 import AgreeSection from '../components/AgreeSection';
 import { getInitialData } from '../data/getInitialData';
@@ -11,11 +12,14 @@ import { submitAllDocuments } from '../workflows/submitAll';
  * 계약서 페이지: 입력된 formState를 이싸인온 필드에 매핑하여 전자서명 생성
  */
 const TermsPage = () => {
+  const location = useLocation();
+  const adminConfig = location.state;
+
   const [formState, dispatch] = useReducer(formReducer, {});
   const [invalidKeys, setInvalidKeys] = useState([]);
 
   useEffect(() => {
-    const initialData = getInitialData(); // 현재는 mock 데이터
+    const initialData = getInitialData(adminConfig); // 현재는 mock 데이터
     dispatch({ type: "SET_ALL", payload: initialData });
   }, []);
 

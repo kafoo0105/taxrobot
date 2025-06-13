@@ -45,9 +45,7 @@ export const generateFieldList = (formState, type) => {
     { name: '신청일_1', value: formattedDate },
     { name: '신청일_2', value: formattedDate },
     { name: '신청일_3', value: formattedDate },
-    { name: 'U+인터넷_요금제', value: null },
-    { name: 'U+TV1_요금제', value: null },
-    { name: 'CPG', value: null },
+    { name: '고객정보_남', value: 'Y' },
   ];
 
   // 자동이체 방식에 따른 필드 추가

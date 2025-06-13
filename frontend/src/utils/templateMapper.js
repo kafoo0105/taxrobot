@@ -14,15 +14,21 @@ export const getTemplateInfo = (caseNumber, carrier) => {
       };
 
     case 'KT':
+      if (!caseNumber || caseNumber < 1 || caseNumber > 12) {
+        throw new Error('올바르지 않은 Case 번호입니다.');
+      }
       return {
-        workflowName: `KT_신청서`,
-        templateId: 48
+        workflowName: `KT신청서_${caseNumber}`,
+        templateId: 60 + caseNumber // 61 ~ 72
       };
 
     case 'LG':
+      if (!caseNumber || caseNumber < 1 || caseNumber > 12) {
+        throw new Error('올바르지 않은 Case 번호입니다.');
+      }
       return {
-        workflowName: `U+신청서`,
-        templateId: 47
+        workflowName: `U+신청서_${caseNumber}`,
+        templateId: 48 + caseNumber // 49 ~ 60
       };
 
     default:

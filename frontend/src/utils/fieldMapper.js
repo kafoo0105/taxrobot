@@ -45,10 +45,19 @@ export const generateFieldList = (formState, type) => {
     { name: '신청일_1', value: formattedDate },
     { name: '신청일_2', value: formattedDate },
     { name: '신청일_3', value: formattedDate },
-    { name: '고객정보_남', value: 'Y' },
+    { name: '신청일_4', value: formattedDate },
+    { name: '신청일_5', value: formattedDate },
+    {
+      name: '고객정보_남',
+      value: formState.gender === '남' ? 'Y' : 'N'
+    },
+    {
+      name: '고객정보_여',
+      value: formState.gender === '여' ? 'Y' : 'N'
+    },
   ];
 
-  // 자동이체 방식에 따른 필드 추가
+  // 자동이체 방식
   let paymentFields = [];
   if (formState.autoPaymentType === '계좌') {
     paymentFields = [

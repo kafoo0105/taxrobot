@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PDFSectionSubscriber from '../sections/PDFSectionSubscriber';
-import AgreeSection from '../components/AgreeSection';
 import { getInitialData } from '../data/getInitialData';
 import { formReducer } from '../reducers/formReducer';
 import { validateForm } from '../utils/validateForm';
@@ -14,6 +13,7 @@ import { submitAllDocuments } from '../workflows/submitAll';
 const TermsPage = () => {
   const location = useLocation();
   const adminConfig = location.state;
+  const carrier = adminConfig?.carrier || 'SKT';
 
   const [formState, dispatch] = useReducer(formReducer, {});
   const [invalidKeys, setInvalidKeys] = useState([]);
@@ -62,35 +62,12 @@ const TermsPage = () => {
       />
 
       <AgreementRow
-        title="서비스 이용계약서"
-        pdfUrl="/pdfs/service.pdf"
+        title={`${carrier} 신청서`}
+        pdfUrl={`/pdfs/${carrier}.pdf`}
         value={formState.serviceAgreement}
         onChange={(val) =>
           dispatch({ type: 'UPDATE_FIELD', key: 'serviceAgreement', value: val })
         }
-      />
-
-      <AgreementRow
-        title="인터넷 서비스 및 유료방송결합상품 전환 신청서"
-        pdfUrl="/pdfs/switch.pdf"
-        value={formState.switchAgreement}
-        onChange={(val) =>
-          dispatch({ type: 'UPDATE_FIELD', key: 'switchAgreement', value: val })
-        }
-      />
-
-      <AgreementRow
-        title="개인정보활용동의서"
-        pdfUrl="/pdfs/privacy.pdf"
-        value={formState.personalAgreement}
-        onChange={(val) =>
-          dispatch({ type: 'UPDATE_FIELD', key: 'personalAgreement', value: val })
-        }
-      />
-
-      <AgreeSection
-        dispatch={dispatch}
-        formState={formState}
       />
 
       {/* 제출 버튼 */}

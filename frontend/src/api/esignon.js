@@ -11,7 +11,7 @@ export const startEsignonWorkflow = async ({ workflowName, templateId, recipient
         language: 'ko',
         is_preview: false,
         export_api_info: {
-          url: 'https://webhook.site/ecf8e4bb-1c67-4a0f-bcc8-aa9b1e6232e6',
+          url: 'https://webhook.site/3eecb197-bcba-4d20-b610-e9d4185b53ab',
           api_type: 'ALL',
           is_embed: true
         },

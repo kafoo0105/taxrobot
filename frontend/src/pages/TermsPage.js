@@ -17,6 +17,7 @@ const TermsPage = () => {
 
   const [formState, dispatch] = useReducer(formReducer, {});
   const [invalidKeys, setInvalidKeys] = useState([]);
+  const [shouldHighlightAgreement, setShouldHighlightAgreement] = useState(false);
 
   useEffect(() => {
     const initialData = getInitialData(adminConfig); // 현재는 mock 데이터
@@ -36,9 +37,14 @@ const TermsPage = () => {
       return;
     }
 
+    if (formState.serviceAgreement !== 'Y') {
+      alert("신청서에 동의하셔야 제출할 수 있습니다.");
+      setShouldHighlightAgreement(true);
+      return;
+    }
+
     try {
       const urls = await submitAllDocuments(formState);
-
       if (urls.length > 0) {
         urls.forEach((url, idx) => {
           window.open(url, `_blank${idx}`);
@@ -65,9 +71,13 @@ const TermsPage = () => {
         title={`${carrier} 신청서`}
         pdfUrl={`/pdfs/${carrier}.pdf`}
         value={formState.serviceAgreement}
-        onChange={(val) =>
-          dispatch({ type: 'UPDATE_FIELD', key: 'serviceAgreement', value: val })
-        }
+        onChange={(val) => {
+          dispatch({ type: 'UPDATE_FIELD', key: 'serviceAgreement', value: val });
+          setShouldHighlightAgreement(false);
+        }}
+        viewed={formState.viewedAgreement}
+        onViewed={() => dispatch({ type: 'UPDATE_FIELD', key: 'viewedAgreement', value: true })}
+        highlight={shouldHighlightAgreement}
       />
 
       {/* 제출 버튼 */}

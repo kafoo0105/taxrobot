@@ -14,7 +14,6 @@ const AdminPage = () => {
       return;
     }
 
-    // 선택값들을 다음 페이지로 전달
     navigate('/terms', {
       state: {
         caseNumber: Number(caseNumber),

@@ -19,7 +19,7 @@ const AgreementRow = ({ title, pdfUrl, value, onChange, viewed, onViewed, highli
         type="button"
         onClick={handleViewClick}
         viewed={hasViewed}
-        highlight={highlight && !viewed}// 강조는 viewed 전까지만
+        highlight={highlight && !viewed}
       >
         전문보기
       </ViewButton>
@@ -74,7 +74,7 @@ const Title = styled.div`
 const ViewButton = styled.button`
   font-size: 13px;
   padding: 6px 12px;
-  background-color: ${({ viewed }) => (viewed ? '#007BFF' : '#f0f0f0')}; // 파란색 or 연회색
+  background-color: ${({ viewed }) => (viewed ? '#007BFF' : '#f0f0f0')};
   color: ${({ viewed }) => (viewed ? '#fff' : '#333')};
   border: ${({ highlight }) => (highlight ? '2px solid #ff4d4f' : 'none')};
   border-radius: 6px;
@@ -91,7 +91,7 @@ const ViewButton = styled.button`
   }
 
   &:hover {
-    background-color: ${({ viewed }) => (viewed ? '#0056b3' : '#e0e0e0')}; // 짙은 파랑 or 회색
+    background-color: ${({ viewed }) => (viewed ? '#0056b3' : '#e0e0e0')};
   }
 `;
 

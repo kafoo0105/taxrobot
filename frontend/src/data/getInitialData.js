@@ -24,5 +24,5 @@ export const getInitialData = (adminConfig = {}) => ({
   price: '10,000',         // 가액
   caseNumber: adminConfig.caseNumber || 1,        // 선택한 Case 번호
   carrier: adminConfig.carrier || 'SKT',           // 통신사 정보
-
+  viewedAgreement: false,
 });

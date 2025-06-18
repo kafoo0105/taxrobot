@@ -8,7 +8,7 @@ function App() {
       <Routes>
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/terms" element={<TermsPage />} />
-        <Route path="*" element={<AdminPage />} /> {/* 초기 진입 경로도 관리자 페이지로 설정 */}
+        <Route path="*" element={<AdminPage />} />
       </Routes>
     </Router>
   );
